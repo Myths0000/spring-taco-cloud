@@ -80,7 +80,7 @@ public class DesignTacoController {
 	    order.addDesign(saved);
 	    
 		log.info("Processing design: " + design);
-		return "redirect:/orders/current"; //代表了一个要展现给用户的视图
+		return "redirect:/orders/current"; //代表了一个要展现给用户的视图??
 	}
 	
 	

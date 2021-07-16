@@ -37,7 +37,8 @@ public class JdbcOrderRepository implements OrderRepository {
 
 		this.orderTacoInserter = new SimpleJdbcInsert(jdbc)
 				.withTableName("Taco_Order_Tacos");
-				this.objectMapper = new ObjectMapper();
+		
+		this.objectMapper = new ObjectMapper();
 	}
 	
 	/**
@@ -68,6 +69,7 @@ public class JdbcOrderRepository implements OrderRepository {
 
         //Date会被 objectMapper 转换成long
         values.put("placedAt", order.getPlacedAt());
+        
 //      executeAndReturnkey() Map的key对应表中要插入的数据列名
         long orderId = orderInserter.executeAndReturnKey(values).longValue();
         return orderId;

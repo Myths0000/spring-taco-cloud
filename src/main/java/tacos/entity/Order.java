@@ -1,9 +1,17 @@
 package tacos.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -13,8 +21,15 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import lombok.Data;
 
 @Data
-public class Order {
+@Entity
+//之所以就只有Order需要，是因为JPA默认会将实体持久化到名为Order的表中，但Order为SQL保留字 （order by）
+@Table(name="Taco_Order") // 持久化到数据库中的表名
+public class Order implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
 	private Date placedAt;
@@ -45,10 +60,18 @@ public class Order {
 	@Digits(integer=3, fraction=0, message="Invalid CVV")
 	private String ccCVV;
 	
+	
+	// 一个订单里可以有多个taco 
+	@ManyToMany(targetEntity=Taco.class)
 	private List<Taco> tacos = new ArrayList<>();
 
-	public void addDesign(Taco saved) {
-		this.tacos.add(saved);
+	public void addDesign(Taco design) {
+		this.tacos.add(design);
+	}
+	
+	@PrePersist
+	void placedAt() {
+		this.placedAt = new Date();
 	}
 
 }

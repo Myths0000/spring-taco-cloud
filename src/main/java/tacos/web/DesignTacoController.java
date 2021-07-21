@@ -34,18 +34,17 @@ public class DesignTacoController {
 	
 	private final IngredientRepository ingredientRepo;
 	
-	private TacoRepository designRepo;
+	private TacoRepository tacoRepo;
 
 	@Autowired
-	public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo) {
+	public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository tacoRepo) {
 		this.ingredientRepo = ingredientRepo;
-		this.designRepo = designRepo;
+		this.tacoRepo = tacoRepo;
 	}
 	
 	/**
 	 * 创建唯一的 Order 对象
-	 * @SesssionAttributes 可以指定模型对象并保存在session中，
-	   然后可以跨请求使用
+	 * @SesssionAttributes 可以指定模型对象并保存在session中，然后可以跨请求使用
 	 * @return
 	 */
 	@ModelAttribute(name = "order")
@@ -53,7 +52,8 @@ public class DesignTacoController {
 	    return new Order();
 	}
 	
-	@ModelAttribute(name = "taco")
+	//原来在showDesignForm（）里的放在了这里，可以在有错误时，
+	@ModelAttribute(name = "designTaco")
 	public Taco taco() {
 		return new Taco();
 	}
@@ -74,9 +74,6 @@ public class DesignTacoController {
 			model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
 		}
 		
-		// 不能被删除，用来给taco命名并被thymeleaf识别 (th:object)
-		model.addAttribute("designTaco", new Taco()); 
-		
 		// 视图的逻辑名称, 将模型渲染到视图上 (html)
 		return "design";
 	}
@@ -91,17 +88,17 @@ public class DesignTacoController {
 	 * @return
 	 */
 	@PostMapping
-	public String processDesign(@Valid @ModelAttribute("designTaco") Taco design, Errors errors,
+	public String processDesign(@Valid @ModelAttribute("designTaco") Taco taco, Errors errors,
 			@ModelAttribute Order order) {
 		
 		if(errors.hasErrors()) {
 			return "design";
 		}
 		
-	    Taco saved = designRepo.save(design);
+	    Taco saved = tacoRepo.save(taco);
 	    order.addDesign(saved);
 	    
-		log.info("Processing design: " + design);
+		log.info("Processing design: " + taco);
 		
 		// 返回的String 代表了一个要展现给用户的视图
 		return "redirect:/orders/current"; 

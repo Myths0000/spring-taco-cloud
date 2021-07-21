@@ -18,10 +18,10 @@
 	    	th:if="${#fields.hasErrors('ingredients')}"
 	    	th:errors="*{ingredients}">Ingredient Error</span>
 	
+	<!-- 每次迭代时，配料元素都会绑定到一个名为ingredient的Thymeleaf变量上 -->
 		<div class="grid">
 			<div class="ingredient-group" id="wraps">
 				<h3>Designate your wrap:</h3>
-				<!-- 每次迭代时，配料元素都会绑定到一个名为ingredient的Thymeleaf变量上 -->
 				<div th:each="ingredient : ${wrap}">
 					<input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
 					<span th:text="${ingredient.name}">INGREDIENT</span><br/>

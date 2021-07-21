@@ -11,8 +11,12 @@
 	<h1>Design your taco!</h1>
 	<img th:src="@{/images/TacoCloud.png}"/>
 	
-	<!-- design指的是什么 -->
-	<form method="POST" th:object="${design}">
+	<!-- design指的是showDesignForm()里和Taco绑定的视图名称-->
+	<form method="POST" th:object="${designTaco}">
+	
+		<span class="validationError"
+	    	th:if="${#fields.hasErrors('ingredients')}"
+	    	th:errors="*{ingredients}">Ingredient Error</span>
 	
 		<div class="grid">
 			<div class="ingredient-group" id="wraps">
@@ -60,7 +64,11 @@
 		<div>
 			<h3>Name your taco creation:</h3>
 	        <input type="text" th:field="*{name}"/>
-
+	        
+	        <!-- <span th:text="${#fields.hasErrors('name')}">XXX</span> -->
+	        <span class="validationError" 
+	        	th:if="${#fields.hasErrors('name')}" 
+	        	th:errors="*{name}">Name Error</span>
 			<br/>
 			
 			<button>Submit your taco</button>

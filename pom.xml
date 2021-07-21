@@ -77,12 +77,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+		
+		<!-- H2 数据库 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		
+		<!-- Spring Data JPA (传递性引入 Hibernate） -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>	
+		</dependency>
+			
 		 <!-- JUnit5单元测试框架 -->
 	    <dependency>
 	        <groupId>org.junit.platform</groupId>

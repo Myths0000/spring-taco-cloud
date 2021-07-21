@@ -18,12 +18,13 @@ import tacos.entity.Taco;
 @Repository
 public class JdbcOrderRepository implements OrderRepository {
 
-	// SimpleJdbcInsert !!!!
+	// SimpleJdbcInsert !
 	private SimpleJdbcInsert orderInserter;
 	private SimpleJdbcInsert orderTacoInserter;
 	private ObjectMapper objectMapper;
  
 	/**
+	 * Constructor
 	 * 与Taco不同的是，不需要把jdbc作为实例赋值
 	 * SimpleJdbcInsert 对jdbc进行了包装
 	 * order 需要数据库提供返回主键的值
@@ -67,10 +68,10 @@ public class JdbcOrderRepository implements OrderRepository {
         Map<String, Object> values =
             objectMapper.convertValue(order, Map.class);
 
-        //Date会被 objectMapper 转换成long
+        // Date 会被 objectMapper 转换成 long, 所以要替换
         values.put("placedAt", order.getPlacedAt());
         
-//      executeAndReturnkey() Map的key对应表中要插入的数据列名
+        // executeAndReturnkey() 处理SQL的insert并返回KeyHolder
         long orderId = orderInserter.executeAndReturnKey(values).longValue();
         return orderId;
       }

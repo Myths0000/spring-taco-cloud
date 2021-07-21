@@ -7,13 +7,12 @@
   </head>
   
   <body>
-  
+ 
   	<!-- 如果没有action，则会提交到与展现该表达相同的URL上 -->	
     <form method="POST" th:action="@{/orders}" th:object="${order}">
       <h1>Order your taco creations!</h1>
       
       <img th:src="@{/images/TacoCloud.png}"/>
-      <a th:href="@{/design}" id="another">Design another taco</a><br/>
     	
   	  <!-- New -->
       <h3>Your tacos in this order:</h3>
@@ -21,6 +20,11 @@
         <li th:each="taco : ${order.tacos}"><span th:text="${taco.name}">taco name</span></li>
       </ul>
       <!-- New -->
+      
+      
+      <h4>
+      <a th:href="@{/design}" id="another">Design another taco</a><br/>
+      </h4>
       
       <div th:if="${#fields.hasErrors()}">
         <span class="validationError">

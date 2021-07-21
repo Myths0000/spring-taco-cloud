@@ -8,7 +8,7 @@ public class HomeController {
 
 	@GetMapping("/delete")
 	public String home() {
-		return ""; //返回视图名，对应相应的html文件？
+		return ""; //返回视图名
 	}
 
 }

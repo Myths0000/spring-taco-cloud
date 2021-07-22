@@ -14,13 +14,10 @@
       
       <img th:src="@{/images/TacoCloud.png}"/>
     	
-  	  <!-- New -->
       <h3>Your tacos in this order:</h3>
       <ul>
         <li th:each="taco : ${order.tacos}"><span th:text="${taco.name}">taco name</span></li>
       </ul>
-      <!-- New -->
-      
       
       <h4>
       <a th:href="@{/design}" id="another">Design another taco</a><br/>

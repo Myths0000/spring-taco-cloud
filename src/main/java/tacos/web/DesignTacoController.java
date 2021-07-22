@@ -1,5 +1,6 @@
 package tacos.web;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import lombok.extern.slf4j.Slf4j;
 import tacos.data.IngredientRepository;
 import tacos.data.TacoRepository;
+import tacos.data.UserRepository;
 import tacos.entity.Ingredient;
 import tacos.entity.Ingredient.Type;
 import tacos.entity.Order;
 import tacos.entity.Taco;
+import tacos.entity.User;
 
 @Slf4j
 @Controller
@@ -35,11 +38,17 @@ public class DesignTacoController {
 	private final IngredientRepository ingredientRepo;
 	
 	private TacoRepository tacoRepo;
+	
+	private UserRepository userRepo;
 
 	@Autowired
-	public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository tacoRepo) {
+	public DesignTacoController(
+			IngredientRepository ingredientRepo,
+			TacoRepository tacoRepo,
+			UserRepository userRepo) {
 		this.ingredientRepo = ingredientRepo;
 		this.tacoRepo = tacoRepo;
+		this.userRepo = userRepo;
 	}
 	
 	/**
@@ -60,7 +69,9 @@ public class DesignTacoController {
 
 	// Model 以参数的方式传递过来
 	@GetMapping
-	public String showDesignForm(Model model) {
+	public String showDesignForm(Model model, Principal principal) {
+		
+		log.info("   --- Designing taco");
 		
 		// 获取数据
 		List<Ingredient> ingredients = new ArrayList<>();
@@ -73,6 +84,10 @@ public class DesignTacoController {
 		for (Type type: types) {
 			model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
 		}
+		
+		String username = principal.getName();
+		User user = userRepo.findByUsername(username);
+		model.addAttribute("user", user);
 		
 		// 视图的逻辑名称, 将模型渲染到视图上 (html)
 		return "design";
@@ -88,8 +103,12 @@ public class DesignTacoController {
 	 * @return
 	 */
 	@PostMapping
-	public String processDesign(@Valid @ModelAttribute("designTaco") Taco taco, Errors errors,
+	public String processDesign(
+			@Valid @ModelAttribute("designTaco") Taco taco,
+			Errors errors,
 			@ModelAttribute Order order) {
+		
+		log.info("   --- Saving taco");
 		
 		if(errors.hasErrors()) {
 			return "design";

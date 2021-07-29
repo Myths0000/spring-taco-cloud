@@ -88,8 +88,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 */
 		http
 			.authorizeRequests()
-				.antMatchers("/design", "/orders").access("hasRole('ROLE_USER')")
-				.antMatchers("/", "/**").access("permitAll")
+				.antMatchers("/design", "/orders/**").access("hasRole('ROLE_USER')")
+				.antMatchers("/","/**").access("permitAll")
 		
 			// 指定用户登录页面
 			.and()
@@ -99,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 			// 用户登出
 			.and()
-				.logout().logoutSuccessUrl("/")
+				.logout().logoutSuccessUrl("/login")
 			
 			/*
 			 * Make H2-Console non-secured;

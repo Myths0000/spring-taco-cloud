@@ -2,16 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
   <head>
-  	<title>Taco Cloud</title>
+  	<title></title>
  	<link rel="stylesheet" th:href="@{/styles.css}"/>
   </head>
 
   <body>
 	<h1>Design your taco!</h1>
-	<img th:src="@{/images/TacoCloud.png}"/>
+	<h2>Feelin' hungry, <span th:text="${user.fullname}">NAME</span>?</h2>
+    <img th:src="@{/images/TacoCloud.png}"/>
+ 
+ 	<!-- 登出按钮 -->   
+    <form method="POST" th:action="@{/logout}" id="logoutForm">
+      <input type="submit" value="Logout"/>
+    </form>
 	
 	<!-- design指的是showDesignForm()里和Taco绑定的视图名称-->
-	<form method="POST" th:object="${designTaco}">
+	<form method="POST" th:object="${designTaco}"  th:action="@{/design}" id="tacoForm">
 	
 		<span class="validationError"
 	    	th:if="${#fields.hasErrors('ingredients')}"

@@ -9,7 +9,7 @@
   <body>
  
   	<!-- 如果没有action，则会提交到与展现该表达相同的URL上 -->	
-    <form method="POST" th:action="@{/orders}" th:object="${order}">
+    <form method="POST" th:action="@{/orders}" th:object="${order}" id="orderForm">
       <h1>Order your taco creations!</h1>
       
       <img th:src="@{/images/TacoCloud.png}"/>
